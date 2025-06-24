@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:immich_mobile/domain/services/log.service.dart';
+import 'package:immich_mobile/extensions/build_context_extensions.dart';
 import 'package:immich_mobile/providers/user.provider.dart';
 import 'package:immich_mobile/providers/readonly_mode.provider.dart';
 import 'package:immich_mobile/repositories/local_files_manager.repository.dart';
@@ -124,6 +125,31 @@ class AdvancedSettings extends HookConsumerWidget {
         onChanged: (value) {
           readonlyModeEnabled.value = value;
           ref.read(readonlyModeProvider.notifier).setReadonlyMode(value);
+          if (value == true) {
+            context.scaffoldMessenger.showSnackBar(
+              SnackBar(
+                duration: const Duration(seconds: 2),
+                content: Text(
+                  "app_bar_readonly_mode_enabled".tr(),
+                  style: context.textTheme.bodyLarge?.copyWith(
+                    color: context.primaryColor,
+                  ),
+                ),
+              ),
+            );
+          } else if (value == false) {
+            context.scaffoldMessenger.showSnackBar(
+              SnackBar(
+                duration: const Duration(seconds: 2),
+                content: Text(
+                  "app_bar_readonly_mode_disabled".tr(),
+                  style: context.textTheme.bodyLarge?.copyWith(
+                    color: context.primaryColor,
+                  ),
+                ),
+              ),
+            );
+          }
         },
       ),
     ];

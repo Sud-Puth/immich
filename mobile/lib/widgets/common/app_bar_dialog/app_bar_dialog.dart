@@ -265,16 +265,27 @@ class ImmichAppBarDialog extends HookConsumerWidget {
     buildReadonlyMessage() {
       if (isReadonlyModeEnabled) {
         return Padding(
-          padding: const EdgeInsets.only(top: 10, bottom: 5),
-          child: Text(
-            "profile_drawer_readonly_mode",
-            style: TextStyle(
-              color: theme.primaryColor,
-              backgroundColor: theme.highlightColor,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
+          padding: const EdgeInsets.only(
+            left: 10.0,
+            right: 10.0,
+          ),
+          child: ListTile(
+            dense: true,
+            visualDensity: VisualDensity.standard,
+            contentPadding: const EdgeInsets.only(left: 20, right: 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
             ),
-          ).tr(),
+            minLeadingWidth: 20,
+            tileColor: theme.primaryColor.withAlpha(80),
+            title: Text(
+              "profile_drawer_readonly_mode",
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: theme.textTheme.labelLarge?.color?.withAlpha(250),
+              ),
+              textAlign: TextAlign.center,
+            ).tr(),
+          ),
         );
       } else {
         return const SizedBox.shrink();
@@ -310,10 +321,10 @@ class ImmichAppBarDialog extends HookConsumerWidget {
                 const AppBarProfileInfoBox(),
                 buildStorageInformation(),
                 const AppBarServerInfo(),
+                buildReadonlyMessage(),
                 buildAppLogButton(),
                 buildSettingButton(),
                 buildSignOutButton(),
-                buildReadonlyMessage(),
                 buildFooter(),
               ],
             ),

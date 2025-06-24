@@ -48,6 +48,36 @@ class ImmichAppBar extends ConsumerWidget implements PreferredSizeWidget {
           ref
               .read(readonlyModeProvider.notifier)
               .toggleReadonlyMode(isReadonlyModeEnabled ? false : true),
+          if (isReadonlyModeEnabled == true)
+            {
+              context.scaffoldMessenger.clearSnackBars(),
+              context.scaffoldMessenger.showSnackBar(
+                SnackBar(
+                  duration: const Duration(seconds: 2),
+                  content: Text(
+                    "app_bar_readonly_mode_disabled".tr(),
+                    style: context.textTheme.bodyLarge?.copyWith(
+                      color: context.primaryColor,
+                    ),
+                  ),
+                ),
+              ),
+            }
+          else if (isReadonlyModeEnabled == false)
+            {
+              context.scaffoldMessenger.clearSnackBars(),
+              context.scaffoldMessenger.showSnackBar(
+                SnackBar(
+                  duration: const Duration(seconds: 2),
+                  content: Text(
+                    "app_bar_readonly_mode_enabled".tr(),
+                    style: context.textTheme.bodyLarge?.copyWith(
+                      color: context.primaryColor,
+                    ),
+                  ),
+                ),
+              ),
+            },
         },
         borderRadius: BorderRadius.circular(12),
         child: Badge(
@@ -232,7 +262,7 @@ class ImmichAppBar extends ConsumerWidget implements PreferredSizeWidget {
               ),
             ),
           ),
-        if (showUploadButton)
+        if (showUploadButton && !isReadonlyModeEnabled)
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: buildBackupIndicator(),
