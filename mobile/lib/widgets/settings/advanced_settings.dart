@@ -38,8 +38,6 @@ class AdvancedSettings extends HookConsumerWidget {
         useAppSettingsState(AppSettingsEnum.photoManagerCustomFilter);
     final readonlyModeEnabled =
         useAppSettingsState(AppSettingsEnum.readonlyModeEnabled);
-    final allowUserAvatarOverride =
-        useAppSettingsState(AppSettingsEnum.allowUserAvatarOverride);
 
     final logLevel = Level.LEVELS[levelId.value].name;
 
@@ -127,11 +125,6 @@ class AdvancedSettings extends HookConsumerWidget {
           readonlyModeEnabled.value = value;
           ref.read(readonlyModeProvider.notifier).setReadonlyMode(value);
         },
-      ),
-      SettingsSwitchListTile(
-        valueNotifier: allowUserAvatarOverride,
-        title: "advanced_settings_allow_user_avatar_override_title".tr(),
-        subtitle: "advanced_settings_allow_user_avatar_override_subtitle".tr(),
       ),
     ];
 

@@ -15,7 +15,6 @@ import 'package:immich_mobile/providers/asset_viewer/asset_stack.provider.dart';
 import 'package:immich_mobile/providers/asset_viewer/current_asset.provider.dart';
 import 'package:immich_mobile/providers/asset_viewer/download.provider.dart';
 import 'package:immich_mobile/providers/asset_viewer/show_controls.provider.dart';
-import 'package:immich_mobile/providers/readonly_mode.provider.dart';
 import 'package:immich_mobile/providers/routes.provider.dart';
 import 'package:immich_mobile/providers/server_info.provider.dart';
 import 'package:immich_mobile/providers/user.provider.dart';
@@ -55,7 +54,6 @@ class BottomGalleryBar extends ConsumerWidget {
     }
     final isOwner =
         asset.ownerId == fastHash(ref.watch(currentUserProvider)?.id ?? '');
-    final isReadonlyModeEnabled = ref.watch(readonlyModeProvider);
     final showControls = ref.watch(showControlsProvider);
     final stackId = asset.stackId;
 
@@ -336,7 +334,7 @@ class BottomGalleryBar extends ConsumerWidget {
         },
     ];
     return IgnorePointer(
-      ignoring: !showControls || isReadonlyModeEnabled,
+      ignoring: !showControls,
       child: AnimatedOpacity(
         duration: const Duration(milliseconds: 100),
         opacity: showControls ? 1.0 : 0.0,

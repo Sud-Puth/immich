@@ -1,5 +1,4 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:immich_mobile/services/app_settings.service.dart';
 import 'package:immich_mobile/providers/app_settings.provider.dart';
 
@@ -15,19 +14,20 @@ class ReadonlyMode extends _$ReadonlyMode {
     return readonlyMode;
   }
 
-  void setReadonlyMode(bool isEnabled) {
+  void setMode(bool value) {
     ref.read(appSettingsServiceProvider).setSetting(
           AppSettingsEnum.readonlyModeEnabled,
-          isEnabled,
+          value,
         );
+  }
+
+  void setReadonlyMode(bool isEnabled) {
+    setMode(isEnabled);
     state = isEnabled;
   }
 
   void toggleReadonlyMode(bool newState) {
-    ref.read(appSettingsServiceProvider).setSetting(
-          AppSettingsEnum.readonlyModeEnabled,
-          newState,
-        );
+    setMode(newState);
     state = newState;
   }
 }

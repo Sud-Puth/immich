@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:immich_mobile/services/app_settings.service.dart';
 import 'package:immich_mobile/extensions/build_context_extensions.dart';
 import 'package:immich_mobile/models/backup/backup_state.model.dart';
 import 'package:immich_mobile/models/server_info/server_info.model.dart';
@@ -12,7 +11,6 @@ import 'package:immich_mobile/providers/backup/backup.provider.dart';
 import 'package:immich_mobile/providers/cast.provider.dart';
 import 'package:immich_mobile/providers/server_info.provider.dart';
 import 'package:immich_mobile/providers/user.provider.dart';
-import 'package:immich_mobile/providers/app_settings.provider.dart';
 import 'package:immich_mobile/providers/readonly_mode.provider.dart';
 import 'package:immich_mobile/routing/router.dart';
 import 'package:immich_mobile/widgets/asset_viewer/cast_dialog.dart';
@@ -38,10 +36,6 @@ class ImmichAppBar extends ConsumerWidget implements PreferredSizeWidget {
     const widgetSize = 30.0;
     final isCasting = ref.watch(castProvider.select((c) => c.isCasting));
     final isReadonlyModeEnabled = ref.watch(readonlyModeProvider);
-    final allowUserAvatarOverride =
-        ref.read(appSettingsServiceProvider).getSetting(
-              AppSettingsEnum.allowUserAvatarOverride,
-            );
 
     buildProfileIndicator() {
       return InkWell(
@@ -51,12 +45,9 @@ class ImmichAppBar extends ConsumerWidget implements PreferredSizeWidget {
           builder: (ctx) => const ImmichAppBarDialog(),
         ),
         onDoubleTap: () => {
-          if (allowUserAvatarOverride)
-            {
-              ref
-                  .read(readonlyModeProvider.notifier)
-                  .toggleReadonlyMode(isReadonlyModeEnabled ? false : true),
-            },
+          ref
+              .read(readonlyModeProvider.notifier)
+              .toggleReadonlyMode(isReadonlyModeEnabled ? false : true),
         },
         borderRadius: BorderRadius.circular(12),
         child: Badge(
@@ -205,6 +196,26 @@ class ImmichAppBar extends ConsumerWidget implements PreferredSizeWidget {
           IconButton(
             icon: const Icon(Icons.science_rounded),
             onPressed: () => context.pushRoute(const FeatInDevRoute()),
+          ),
+        if (isReadonlyModeEnabled)
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: IconButton(
+              onPressed: () => context.scaffoldMessenger.showSnackBar(
+                SnackBar(
+                  duration: const Duration(seconds: 3),
+                  content: Text(
+                    "profile_drawer_readonly_mode".tr(),
+                    style: context.textTheme.bodyLarge?.copyWith(
+                      color: context.primaryColor,
+                    ),
+                  ),
+                ),
+              ),
+              icon: const Icon(
+                Icons.edit_off_rounded,
+              ),
+            ),
           ),
         if (isCasting)
           Padding(

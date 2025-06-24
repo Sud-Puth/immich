@@ -95,11 +95,6 @@ enum AppSettingsEnum<T> {
     "readonlyModeEnabled",
     false,
   ),
-  allowUserAvatarOverride<bool>(
-    StoreKey.allowUserAvatarOverride,
-    "allowUserAvatarOverride",
-    false,
-  ),
   ;
 
   const AppSettingsEnum(this.storeKey, this.hiveKey, this.defaultValue);
