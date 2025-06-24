@@ -50,7 +50,6 @@ class ImmichAppBar extends ConsumerWidget implements PreferredSizeWidget {
               .toggleReadonlyMode(isReadonlyModeEnabled ? false : true),
           if (isReadonlyModeEnabled == true)
             {
-              context.scaffoldMessenger.clearSnackBars(),
               context.scaffoldMessenger.showSnackBar(
                 SnackBar(
                   duration: const Duration(seconds: 2),
@@ -65,7 +64,6 @@ class ImmichAppBar extends ConsumerWidget implements PreferredSizeWidget {
             }
           else if (isReadonlyModeEnabled == false)
             {
-              context.scaffoldMessenger.clearSnackBars(),
               context.scaffoldMessenger.showSnackBar(
                 SnackBar(
                   duration: const Duration(seconds: 2),
