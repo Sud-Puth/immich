@@ -48,34 +48,20 @@ class ImmichAppBar extends ConsumerWidget implements PreferredSizeWidget {
           ref
               .read(readonlyModeProvider.notifier)
               .toggleReadonlyMode(isReadonlyModeEnabled ? false : true),
-          if (isReadonlyModeEnabled == true)
-            {
-              context.scaffoldMessenger.showSnackBar(
-                SnackBar(
-                  duration: const Duration(seconds: 2),
-                  content: Text(
-                    "app_bar_readonly_mode_disabled".tr(),
-                    style: context.textTheme.bodyLarge?.copyWith(
-                      color: context.primaryColor,
-                    ),
-                  ),
+          context.scaffoldMessenger.showSnackBar(
+            SnackBar(
+              duration: const Duration(seconds: 2),
+              content: Text(
+                (isReadonlyModeEnabled
+                        ? "readonly_mode_disabled"
+                        : "readonly_mode_enabled")
+                    .tr(),
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: context.primaryColor,
                 ),
               ),
-            }
-          else if (isReadonlyModeEnabled == false)
-            {
-              context.scaffoldMessenger.showSnackBar(
-                SnackBar(
-                  duration: const Duration(seconds: 2),
-                  content: Text(
-                    "app_bar_readonly_mode_enabled".tr(),
-                    style: context.textTheme.bodyLarge?.copyWith(
-                      color: context.primaryColor,
-                    ),
-                  ),
-                ),
-              ),
-            },
+            ),
+          ),
         },
         borderRadius: BorderRadius.circular(12),
         child: Badge(

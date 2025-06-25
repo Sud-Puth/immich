@@ -103,7 +103,7 @@ class MultiselectGrid extends HookConsumerWidget {
       bool multiselect,
       Set<Asset> selectedAssets,
     ) {
-      selectionEnabledHook.value = isReadonlyModeEnabled ? false : multiselect;
+      selectionEnabledHook.value = !isReadonlyModeEnabled && multiselect;
       selection.value = selectedAssets;
       selectionAssetState.value =
           AssetSelectionState.fromSelection(selectedAssets);

@@ -263,33 +263,29 @@ class ImmichAppBarDialog extends HookConsumerWidget {
     }
 
     buildReadonlyMessage() {
-      if (isReadonlyModeEnabled) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            left: 10.0,
-            right: 10.0,
+      return Padding(
+        padding: const EdgeInsets.only(
+          left: 10.0,
+          right: 10.0,
+        ),
+        child: ListTile(
+          dense: true,
+          visualDensity: VisualDensity.standard,
+          contentPadding: const EdgeInsets.only(left: 20, right: 20),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
-          child: ListTile(
-            dense: true,
-            visualDensity: VisualDensity.standard,
-            contentPadding: const EdgeInsets.only(left: 20, right: 20),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+          minLeadingWidth: 20,
+          tileColor: theme.primaryColor.withAlpha(80),
+          title: Text(
+            "profile_drawer_readonly_mode",
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: theme.textTheme.labelLarge?.color?.withAlpha(250),
             ),
-            minLeadingWidth: 20,
-            tileColor: theme.primaryColor.withAlpha(80),
-            title: Text(
-              "profile_drawer_readonly_mode",
-              style: theme.textTheme.labelLarge?.copyWith(
-                color: theme.textTheme.labelLarge?.color?.withAlpha(250),
-              ),
-              textAlign: TextAlign.center,
-            ).tr(),
-          ),
-        );
-      } else {
-        return const SizedBox.shrink();
-      }
+            textAlign: TextAlign.center,
+          ).tr(),
+        ),
+      );
     }
 
     return Dismissible(
@@ -321,7 +317,7 @@ class ImmichAppBarDialog extends HookConsumerWidget {
                 const AppBarProfileInfoBox(),
                 buildStorageInformation(),
                 const AppBarServerInfo(),
-                buildReadonlyMessage(),
+                if (isReadonlyModeEnabled) buildReadonlyMessage(),
                 buildAppLogButton(),
                 buildSettingButton(),
                 buildSignOutButton(),

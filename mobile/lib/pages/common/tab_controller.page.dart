@@ -147,16 +147,14 @@ class TabControllerPage extends HookConsumerWidget {
     final multiselectEnabled = ref.watch(multiselectProvider);
     final isReadonlyModeEnabled = ref.watch(readonlyModeProvider);
     return AutoTabsRouter(
-      routes: isReadonlyModeEnabled
-          ? [
-              const PhotosRoute(),
-            ]
-          : [
-              const PhotosRoute(),
-              SearchRoute(),
-              const AlbumsRoute(),
-              const LibraryRoute(),
-            ],
+      routes: [
+        const PhotosRoute(),
+        if (!isReadonlyModeEnabled) ...[
+          SearchRoute(),
+          const AlbumsRoute(),
+          const LibraryRoute(),
+        ],
+      ],
       duration: const Duration(milliseconds: 600),
       transitionBuilder: (context, child, animation) => FadeTransition(
         opacity: animation,

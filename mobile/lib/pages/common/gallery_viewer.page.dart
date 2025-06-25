@@ -434,17 +434,16 @@ class GalleryViewerPage extends HookConsumerWidget {
               child: Column(
                 children: [
                   GalleryStackedChildren(stackIndex),
-                  isReadonlyModeEnabled
-                      ? const SizedBox.shrink()
-                      : BottomGalleryBar(
-                          key: const ValueKey('bottom-bar'),
-                          renderList: renderList,
-                          totalAssets: totalAssets,
-                          controller: controller,
-                          showStack: showStack,
-                          stackIndex: stackIndex,
-                          assetIndex: currentIndex,
-                        ),
+                  if (!isReadonlyModeEnabled)
+                    BottomGalleryBar(
+                      key: const ValueKey('bottom-bar'),
+                      renderList: renderList,
+                      totalAssets: totalAssets,
+                      controller: controller,
+                      showStack: showStack,
+                      stackIndex: stackIndex,
+                      assetIndex: currentIndex,
+                    ),
                 ],
               ),
             ),

@@ -125,31 +125,18 @@ class AdvancedSettings extends HookConsumerWidget {
         onChanged: (value) {
           readonlyModeEnabled.value = value;
           ref.read(readonlyModeProvider.notifier).setReadonlyMode(value);
-          if (value == true) {
-            context.scaffoldMessenger.showSnackBar(
-              SnackBar(
-                duration: const Duration(seconds: 2),
-                content: Text(
-                  "app_bar_readonly_mode_enabled".tr(),
-                  style: context.textTheme.bodyLarge?.copyWith(
-                    color: context.primaryColor,
-                  ),
+          context.scaffoldMessenger.showSnackBar(
+            SnackBar(
+              duration: const Duration(seconds: 2),
+              content: Text(
+                (value ? "readonly_mode_enabled" : "readonly_mode_disabled")
+                    .tr(),
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: context.primaryColor,
                 ),
               ),
-            );
-          } else if (value == false) {
-            context.scaffoldMessenger.showSnackBar(
-              SnackBar(
-                duration: const Duration(seconds: 2),
-                content: Text(
-                  "app_bar_readonly_mode_disabled".tr(),
-                  style: context.textTheme.bodyLarge?.copyWith(
-                    color: context.primaryColor,
-                  ),
-                ),
-              ),
-            );
-          }
+            ),
+          );
         },
       ),
     ];
