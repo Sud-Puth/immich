@@ -272,8 +272,10 @@ class ImmichAppBarDialog extends HookConsumerWidget {
           dense: true,
           visualDensity: VisualDensity.standard,
           contentPadding: const EdgeInsets.only(left: 20, right: 20),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
           ),
           minLeadingWidth: 20,
           tileColor: theme.primaryColor.withAlpha(80),
