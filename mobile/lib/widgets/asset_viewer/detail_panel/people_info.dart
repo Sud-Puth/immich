@@ -6,6 +6,7 @@ import 'package:immich_mobile/entities/asset.entity.dart';
 import 'package:immich_mobile/extensions/build_context_extensions.dart';
 import 'package:immich_mobile/models/search/search_curated_content.model.dart';
 import 'package:immich_mobile/providers/asset_viewer/asset_people.provider.dart';
+import 'package:immich_mobile/providers/readonly_mode.provider.dart';
 import 'package:immich_mobile/routing/router.dart';
 import 'package:immich_mobile/widgets/search/curated_people_row.dart';
 import 'package:immich_mobile/widgets/search/person_name_edit_form.dart';
@@ -24,6 +25,7 @@ class PeopleInfo extends ConsumerWidget {
         .watch(assetPeopleNotifierProvider(asset))
         .value
         ?.where((p) => !p.isHidden);
+    final isReadonlyModeEnabled = ref.watch(readonlyModeProvider);
 
     showPersonNameEditModel(
       String personId,
@@ -83,7 +85,7 @@ class PeopleInfo extends ConsumerWidget {
               child: CuratedPeopleRow(
                 padding: padding,
                 content: curatedPeople,
-                onTap: (content, index) {
+                onTap:  isReadonlyModeEnabled ? null : (content, index) {
                   context
                       .pushRoute(
                         PersonResultRoute(
@@ -93,7 +95,7 @@ class PeopleInfo extends ConsumerWidget {
                       )
                       .then((_) => peopleProvider.refresh());
                 },
-                onNameTap: (person, index) => {
+                onNameTap: isReadonlyModeEnabled ? null : (person, index) => {
                   showPersonNameEditModel(person.id, person.label),
                 },
               ),

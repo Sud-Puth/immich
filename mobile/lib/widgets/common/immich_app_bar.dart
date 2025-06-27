@@ -169,7 +169,7 @@ class ImmichAppBar extends ConsumerWidget implements PreferredSizeWidget {
     }
 
     return AppBar(
-      backgroundColor: context.themeData.appBarTheme.backgroundColor,
+      backgroundColor: isReadonlyModeEnabled ? context.themeData.primaryColor.withAlpha(80) : context.themeData.appBarTheme.backgroundColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(5),
@@ -210,26 +210,6 @@ class ImmichAppBar extends ConsumerWidget implements PreferredSizeWidget {
           IconButton(
             icon: const Icon(Icons.science_rounded),
             onPressed: () => context.pushRoute(const FeatInDevRoute()),
-          ),
-        if (isReadonlyModeEnabled)
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: IconButton(
-              onPressed: () => context.scaffoldMessenger.showSnackBar(
-                SnackBar(
-                  duration: const Duration(seconds: 3),
-                  content: Text(
-                    "profile_drawer_readonly_mode".tr(),
-                    style: context.textTheme.bodyLarge?.copyWith(
-                      color: context.primaryColor,
-                    ),
-                  ),
-                ),
-              ),
-              icon: const Icon(
-                Icons.edit_off_rounded,
-              ),
-            ),
           ),
         if (isCasting)
           Padding(
