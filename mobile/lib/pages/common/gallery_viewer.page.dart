@@ -240,7 +240,7 @@ class GalleryViewerPage extends HookConsumerWidget {
 
     PhotoViewGalleryPageOptions buildImage(Asset asset) {
       return PhotoViewGalleryPageOptions(
-        onDragStart: (_, details, __) {
+        onDragStart: (_, details, __, ___) {
           localPosition.value = details.localPosition;
         },
         onDragUpdate: (_, details, __) {
@@ -269,7 +269,7 @@ class GalleryViewerPage extends HookConsumerWidget {
 
     PhotoViewGalleryPageOptions buildVideo(BuildContext context, Asset asset) {
       return PhotoViewGalleryPageOptions.customChild(
-        onDragStart: (_, details, __) =>
+        onDragStart: (_, details, __, ___) =>
             localPosition.value = details.localPosition,
         onDragUpdate: (_, details, __) => handleSwipeUpDown(details),
         heroAttributes: _getHeroAttributes(asset),
@@ -372,7 +372,7 @@ class GalleryViewerPage extends HookConsumerWidget {
                   ),
               itemCount: totalAssets.value,
               scrollDirection: Axis.horizontal,
-              onPageChanged: (value) {
+              onPageChanged: (value, _) {
                 final next = currentIndex.value < value ? value + 1 : value - 1;
 
                 ref.read(hapticFeedbackProvider.notifier).selectionClick();

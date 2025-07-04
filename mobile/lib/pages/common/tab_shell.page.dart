@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:immich_mobile/extensions/build_context_extensions.dart';
 import 'package:immich_mobile/providers/asset_viewer/scroll_notifier.provider.dart';
-import 'package:immich_mobile/providers/multiselect.provider.dart';
-import 'package:immich_mobile/providers/search/search_input_focus.provider.dart';
-import 'package:immich_mobile/routing/router.dart';
 import 'package:immich_mobile/providers/haptic_feedback.provider.dart';
+import 'package:immich_mobile/providers/search/search_input_focus.provider.dart';
 import 'package:immich_mobile/providers/tab.provider.dart';
+import 'package:immich_mobile/providers/timeline/multiselect.provider.dart';
+import 'package:immich_mobile/routing/router.dart';
 
 @RoutePage()
 class TabShellPage extends ConsumerWidget {
@@ -40,22 +40,6 @@ class TabShellPage extends ConsumerWidget {
           ),
         ],
       );
-    }
-
-    void onNavigationSelected(TabsRouter router, int index) {
-      // On Photos page menu tapped
-      if (router.activeIndex == 0 && index == 0) {
-        scrollToTopNotifierProvider.scrollToTop();
-      }
-
-      // On Search page tapped
-      if (router.activeIndex == 1 && index == 1) {
-        ref.read(searchInputFocusProvider).requestFocus();
-      }
-
-      ref.read(hapticFeedbackProvider.notifier).selectionClick();
-      router.setActiveIndex(index);
-      ref.read(tabProvider.notifier).state = TabEnum.values[index];
     }
 
     final navigationDestinations = [
@@ -110,15 +94,6 @@ class TabShellPage extends ConsumerWidget {
       ),
     ];
 
-    Widget bottomNavigationBar(TabsRouter tabsRouter) {
-      return NavigationBar(
-        selectedIndex: tabsRouter.activeIndex,
-        onDestinationSelected: (index) =>
-            onNavigationSelected(tabsRouter, index),
-        destinations: navigationDestinations,
-      );
-    }
-
     Widget navigationRail(TabsRouter tabsRouter) {
       return NavigationRail(
         destinations: navigationDestinations
@@ -131,19 +106,18 @@ class TabShellPage extends ConsumerWidget {
             )
             .toList(),
         onDestinationSelected: (index) =>
-            onNavigationSelected(tabsRouter, index),
+            _onNavigationSelected(tabsRouter, index, ref),
         selectedIndex: tabsRouter.activeIndex,
         labelType: NavigationRailLabelType.all,
         groupAlignment: 0.0,
       );
     }
 
-    final multiselectEnabled = ref.watch(multiselectProvider);
     return AutoTabsRouter(
       routes: [
         const MainTimelineRoute(),
         SearchRoute(),
-        const AlbumsRoute(),
+        const DriftAlbumsRoute(),
         const LibraryRoute(),
       ],
       duration: const Duration(milliseconds: 600),
@@ -172,12 +146,57 @@ class TabShellPage extends ConsumerWidget {
                     ],
                   )
                 : heroedChild,
-            bottomNavigationBar: multiselectEnabled || isScreenLandscape
-                ? null
-                : bottomNavigationBar(tabsRouter),
+            bottomNavigationBar: _BottomNavigationBar(
+              tabsRouter: tabsRouter,
+              destinations: navigationDestinations,
+            ),
           ),
         );
       },
+    );
+  }
+}
+
+void _onNavigationSelected(TabsRouter router, int index, WidgetRef ref) {
+  // On Photos page menu tapped
+  if (router.activeIndex == 0 && index == 0) {
+    scrollToTopNotifierProvider.scrollToTop();
+  }
+
+  // On Search page tapped
+  if (router.activeIndex == 1 && index == 1) {
+    ref.read(searchInputFocusProvider).requestFocus();
+  }
+
+  ref.read(hapticFeedbackProvider.notifier).selectionClick();
+  router.setActiveIndex(index);
+  ref.read(tabProvider.notifier).state = TabEnum.values[index];
+}
+
+class _BottomNavigationBar extends ConsumerWidget {
+  const _BottomNavigationBar({
+    required this.tabsRouter,
+    required this.destinations,
+  });
+
+  final List<Widget> destinations;
+  final TabsRouter tabsRouter;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isScreenLandscape = context.orientation == Orientation.landscape;
+    final isMultiselectEnabled =
+        ref.watch(multiSelectProvider.select((s) => s.isEnabled));
+
+    if (isScreenLandscape || isMultiselectEnabled) {
+      return const SizedBox.shrink();
+    }
+
+    return NavigationBar(
+      selectedIndex: tabsRouter.activeIndex,
+      onDestinationSelected: (index) =>
+          _onNavigationSelected(tabsRouter, index, ref),
+      destinations: destinations,
     );
   }
 }
