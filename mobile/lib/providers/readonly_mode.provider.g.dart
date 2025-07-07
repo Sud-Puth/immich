@@ -6,7 +6,7 @@ part of 'readonly_mode.provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$readonlyModeHash() => r'469d7b62ea7d80f3137561b2005a163d9e2aea40';
+String _$readonlyModeHash() => r'31e5a68a25abb7f20ec63f65d5139dec0af10375';
 
 /// See also [ReadonlyMode].
 @ProviderFor(ReadonlyMode)

@@ -22,12 +22,12 @@ class ReadonlyMode extends _$ReadonlyMode {
   }
 
   void setReadonlyMode(bool isEnabled) {
-    setMode(isEnabled);
     state = isEnabled;
+    setMode(state);
   }
 
-  void toggleReadonlyMode(bool newState) {
-    setMode(newState);
-    state = newState;
+  void toggleReadonlyMode() {
+    state = !state;
+    setMode(state);
   }
 }
