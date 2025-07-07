@@ -45,9 +45,7 @@ class ImmichAppBar extends ConsumerWidget implements PreferredSizeWidget {
           builder: (ctx) => const ImmichAppBarDialog(),
         ),
         onDoubleTap: () => {
-          ref
-              .read(readonlyModeProvider.notifier)
-              .toggleReadonlyMode(isReadonlyModeEnabled ? false : true),
+          ref.read(readonlyModeProvider.notifier).toggleReadonlyMode(),
           context.scaffoldMessenger.showSnackBar(
             SnackBar(
               duration: const Duration(seconds: 2),
@@ -170,7 +168,7 @@ class ImmichAppBar extends ConsumerWidget implements PreferredSizeWidget {
 
     return AppBar(
       backgroundColor: isReadonlyModeEnabled
-          ? context.themeData.primaryColor.withAlpha(80)
+          ? context.primaryColor.withValues(alpha: .15)
           : context.themeData.appBarTheme.backgroundColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
