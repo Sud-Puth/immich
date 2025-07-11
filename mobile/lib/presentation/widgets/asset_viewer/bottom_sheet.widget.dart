@@ -10,14 +10,13 @@ import 'package:immich_mobile/presentation/widgets/action_buttons/archive_action
 import 'package:immich_mobile/presentation/widgets/action_buttons/delete_action_button.widget.dart';
 import 'package:immich_mobile/presentation/widgets/action_buttons/delete_local_action_button.widget.dart';
 import 'package:immich_mobile/presentation/widgets/action_buttons/download_action_button.widget.dart';
-import 'package:immich_mobile/presentation/widgets/action_buttons/favorite_action_button.widget.dart';
 import 'package:immich_mobile/presentation/widgets/action_buttons/move_to_lock_folder_action_button.widget.dart';
 import 'package:immich_mobile/presentation/widgets/action_buttons/share_action_button.widget.dart';
 import 'package:immich_mobile/presentation/widgets/action_buttons/share_link_action_button.widget.dart';
 import 'package:immich_mobile/presentation/widgets/action_buttons/trash_action_button.widget.dart';
 import 'package:immich_mobile/presentation/widgets/action_buttons/upload_action_button.widget.dart';
 import 'package:immich_mobile/presentation/widgets/asset_viewer/bottom_sheet/location_details.widget.dart';
-import 'package:immich_mobile/presentation/widgets/bottom_app_bar/base_bottom_sheet.widget.dart';
+import 'package:immich_mobile/presentation/widgets/bottom_sheet/base_bottom_sheet.widget.dart';
 import 'package:immich_mobile/providers/infrastructure/asset_viewer/current_asset.provider.dart';
 import 'package:immich_mobile/providers/server_info.provider.dart';
 import 'package:immich_mobile/utils/bytes_units.dart';
@@ -37,6 +36,10 @@ class AssetDetailBottomSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final asset = ref.watch(currentAssetNotifier);
+    if (asset == null) {
+      return const SizedBox.shrink();
+    }
+
     final isTrashEnable = ref.watch(
       serverInfoProvider.select((state) => state.serverFeatures.trash),
     );
@@ -46,7 +49,6 @@ class AssetDetailBottomSheet extends ConsumerWidget {
       if (asset.hasRemote) ...[
         const ShareLinkActionButton(source: ActionSource.viewer),
         const ArchiveActionButton(source: ActionSource.viewer),
-        const FavoriteActionButton(source: ActionSource.viewer),
         if (!asset.hasLocal) const DownloadActionButton(),
         isTrashEnable
             ? const TrashActionButton(source: ActionSource.viewer)
@@ -67,7 +69,7 @@ class AssetDetailBottomSheet extends ConsumerWidget {
       controller: controller,
       initialChildSize: initialChildSize,
       minChildSize: 0.1,
-      maxChildSize: 1.0,
+      maxChildSize: 0.88,
       expand: false,
       shouldCloseOnMinExtent: false,
       resizeOnScroll: false,
@@ -136,6 +138,10 @@ class _AssetDetailBottomSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final asset = ref.watch(currentAssetNotifier);
+    if (asset == null) {
+      return const SliverToBoxAdapter(child: SizedBox.shrink());
+    }
+
     final exifInfo = ref.watch(currentAssetExifProvider).valueOrNull;
     final cameraTitle = _getCameraInfoTitle(exifInfo);
 

@@ -1,14 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:immich_mobile/domain/models/album/local_album.model.dart';
+import 'package:immich_mobile/presentation/widgets/bottom_sheet/local_album_bottom_sheet.widget.dart';
 import 'package:immich_mobile/presentation/widgets/timeline/timeline.widget.dart';
 import 'package:immich_mobile/providers/infrastructure/timeline.provider.dart';
+import 'package:immich_mobile/widgets/common/mesmerizing_sliver_app_bar.dart';
 
 @RoutePage()
-class RemoteTimelinePage extends StatelessWidget {
-  final String albumId;
+class LocalTimelinePage extends StatelessWidget {
+  final LocalAlbum album;
 
-  const RemoteTimelinePage({super.key, required this.albumId});
+  const LocalTimelinePage({super.key, required this.album});
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +21,16 @@ class RemoteTimelinePage extends StatelessWidget {
           (ref) {
             final timelineService = ref
                 .watch(timelineFactoryProvider)
-                .remoteAlbum(albumId: albumId);
+                .localAlbum(albumId: album.id);
             ref.onDispose(timelineService.dispose);
             return timelineService;
           },
         ),
       ],
-      child: const Timeline(),
+      child: Timeline(
+        appBar: MesmerizingSliverAppBar(title: album.name),
+        bottomSheet: const LocalAlbumBottomSheet(),
+      ),
     );
   }
 }

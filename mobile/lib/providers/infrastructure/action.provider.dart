@@ -56,7 +56,10 @@ class ActionNotifier extends Notifier<void> {
     final Set<BaseAsset> assets = switch (source) {
       ActionSource.timeline =>
         ref.read(multiSelectProvider.select((s) => s.selectedAssets)),
-      ActionSource.viewer => {ref.read(currentAssetNotifier)},
+      ActionSource.viewer => switch (ref.read(currentAssetNotifier)) {
+          BaseAsset asset => {asset},
+          null => {},
+        },
     };
 
     return switch (T) {
@@ -218,6 +221,24 @@ class ActionNotifier extends Notifier<void> {
       return ActionResult(count: ids.length, success: true);
     } catch (error, stack) {
       _logger.severe('Failed to edit location for assets', error, stack);
+      return ActionResult(
+        count: ids.length,
+        success: false,
+        error: error.toString(),
+      );
+    }
+  }
+
+  Future<ActionResult> removeFromAlbum(
+    ActionSource source,
+    String albumId,
+  ) async {
+    final ids = _getRemoteIdsForSource(source);
+    try {
+      final removedCount = await _service.removeFromAlbum(ids, albumId);
+      return ActionResult(count: removedCount, success: true);
+    } catch (error, stack) {
+      _logger.severe('Failed to remove assets from album', error, stack);
       return ActionResult(
         count: ids.length,
         success: false,

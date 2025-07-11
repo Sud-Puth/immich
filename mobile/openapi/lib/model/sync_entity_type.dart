@@ -56,7 +56,10 @@ class SyncEntityType {
   static const memoryToAssetDeleteV1 = SyncEntityType._(r'MemoryToAssetDeleteV1');
   static const stackV1 = SyncEntityType._(r'StackV1');
   static const stackDeleteV1 = SyncEntityType._(r'StackDeleteV1');
+  static const personV1 = SyncEntityType._(r'PersonV1');
+  static const personDeleteV1 = SyncEntityType._(r'PersonDeleteV1');
   static const syncAckV1 = SyncEntityType._(r'SyncAckV1');
+  static const syncResetV1 = SyncEntityType._(r'SyncResetV1');
 
   /// List of all possible values in this [enum][SyncEntityType].
   static const values = <SyncEntityType>[
@@ -93,7 +96,10 @@ class SyncEntityType {
     memoryToAssetDeleteV1,
     stackV1,
     stackDeleteV1,
+    personV1,
+    personDeleteV1,
     syncAckV1,
+    syncResetV1,
   ];
 
   static SyncEntityType? fromJson(dynamic value) => SyncEntityTypeTypeTransformer().decode(value);
@@ -165,7 +171,10 @@ class SyncEntityTypeTypeTransformer {
         case r'MemoryToAssetDeleteV1': return SyncEntityType.memoryToAssetDeleteV1;
         case r'StackV1': return SyncEntityType.stackV1;
         case r'StackDeleteV1': return SyncEntityType.stackDeleteV1;
+        case r'PersonV1': return SyncEntityType.personV1;
+        case r'PersonDeleteV1': return SyncEntityType.personDeleteV1;
         case r'SyncAckV1': return SyncEntityType.syncAckV1;
+        case r'SyncResetV1': return SyncEntityType.syncResetV1;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

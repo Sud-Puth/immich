@@ -520,6 +520,8 @@ class ApiClient {
           return SessionResponseDto.fromJson(value);
         case 'SessionUnlockDto':
           return SessionUnlockDto.fromJson(value);
+        case 'SessionUpdateDto':
+          return SessionUpdateDto.fromJson(value);
         case 'SharedLinkCreateDto':
           return SharedLinkCreateDto.fromJson(value);
         case 'SharedLinkEditDto':
@@ -584,6 +586,10 @@ class ApiClient {
           return SyncPartnerDeleteV1.fromJson(value);
         case 'SyncPartnerV1':
           return SyncPartnerV1.fromJson(value);
+        case 'SyncPersonDeleteV1':
+          return SyncPersonDeleteV1.fromJson(value);
+        case 'SyncPersonV1':
+          return SyncPersonV1.fromJson(value);
         case 'SyncRequestType':
           return SyncRequestTypeTypeTransformer().decode(value);
         case 'SyncStackDeleteV1':

@@ -11,7 +11,7 @@ import {
   SyncEntityType,
   SyncRequestType,
 } from 'src/enum';
-import { Optional, ValidateDate, ValidateUUID } from 'src/validation';
+import { Optional, ValidateBoolean, ValidateDate, ValidateUUID } from 'src/validation';
 
 export class AssetFullSyncDto {
   @ValidateUUID({ optional: true })
@@ -234,7 +234,30 @@ export class SyncStackDeleteV1 {
 }
 
 @ExtraModel()
+export class SyncPersonV1 {
+  id!: string;
+  createdAt!: Date;
+  updatedAt!: Date;
+  ownerId!: string;
+  name!: string;
+  birthDate!: Date | null;
+  thumbnailPath!: string;
+  isHidden!: boolean;
+  isFavorite!: boolean;
+  color!: string | null;
+  faceAssetId!: string | null;
+}
+
+@ExtraModel()
+export class SyncPersonDeleteV1 {
+  personId!: string;
+}
+
+@ExtraModel()
 export class SyncAckV1 {}
+
+@ExtraModel()
+export class SyncResetV1 {}
 
 export type SyncItem = {
   [SyncEntityType.UserV1]: SyncUserV1;
@@ -270,13 +293,19 @@ export type SyncItem = {
   [SyncEntityType.PartnerStackBackfillV1]: SyncStackV1;
   [SyncEntityType.PartnerStackDeleteV1]: SyncStackDeleteV1;
   [SyncEntityType.PartnerStackV1]: SyncStackV1;
+  [SyncEntityType.PersonV1]: SyncPersonV1;
+  [SyncEntityType.PersonDeleteV1]: SyncPersonDeleteV1;
   [SyncEntityType.SyncAckV1]: SyncAckV1;
+  [SyncEntityType.SyncResetV1]: SyncResetV1;
 };
 
 export class SyncStreamDto {
   @IsEnum(SyncRequestType, { each: true })
   @ApiProperty({ enumName: 'SyncRequestType', enum: SyncRequestType, isArray: true })
   types!: SyncRequestType[];
+
+  @ValidateBoolean({ optional: true })
+  reset?: boolean;
 }
 
 export class SyncAckDto {
